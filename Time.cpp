@@ -1,22 +1,22 @@
-#ifndef _TIME_H_
-#define _TIME_H_
-#include "Time.h"
+#ifndef _NOTEBOOK_H_
+#define _NOTEBOOK_H_
+#include "Notebook.h"
 #endif
 
 //Printing of one node
-void Time::one_print(struct tnode* p) {
+void Notebook::Time::one_print(struct tnode* p) {
 	std::cout << "\nЗапись № " << p->number << ": ";
 	std::cout << "год: "<< p->times[0]<<", месяц: "<< p->times[1] <<", число: "<< p->times[2] <<", время: "<< p->times[3]<<":"<< p->times[4] << ", ";
 	std::cout << "важность: " << p->priors << ", место: " << p->place << ", описание: " << p->description;
 }
 
 //Function-container
-void Time::addtree_container(struct tnode* p, int number, int* times, int priors, std::string description, std::string  place) {
+void Notebook::Time::addtree_container(struct tnode* p, int number, int* times, int priors, std::string description, std::string  place) {
 	root = addtree(root, number, times, priors, description, place);
 }
 
 //Adding node to time tree
-struct Time::tnode* Time::addtree(struct tnode* p, int number, int* times, int priors, std::string description, std::string place) {
+struct Notebook::Time::tnode* Notebook::Time::addtree(struct tnode* p, int number, int* times, int priors, std::string description, std::string place) {
 	int cond = 0;
 
 	//Check
@@ -55,7 +55,7 @@ struct Time::tnode* Time::addtree(struct tnode* p, int number, int* times, int p
 }
 
 //Delete node from time tree
-struct Time::tnode* Time::del(struct tnode* p, int number, int* times) {
+struct Notebook::Time::tnode* Notebook::Time::del(struct tnode* p, int number, int* times) {
 	if (p == NULL)
 		return p;
 
@@ -110,7 +110,7 @@ struct Time::tnode* Time::del(struct tnode* p, int number, int* times) {
 }
 
 //Delete all time tree
-void Time::freemem(tnode* tree) {
+void Notebook::Time::freemem(tnode* tree) {
 	if (tree != NULL) {
 		freemem(tree->left);
 		freemem(tree->right);
@@ -119,7 +119,7 @@ void Time::freemem(tnode* tree) {
 }
 
 //Print time tree
-void Time::treeprint(struct tnode* p) {
+void Notebook::Time::treeprint(struct tnode* p) {
 	if (p != NULL) {
 		treeprint(p->left);
 		one_print(p);
@@ -128,7 +128,7 @@ void Time::treeprint(struct tnode* p) {
 }
 
 //Search in time tree by priopity
-struct Time::tnode* Time::search(struct tnode* p, int* times, int number) {
+struct Notebook::Time::tnode* Notebook::Time::search(struct tnode* p, int* times, int number) {
 	int cond = 0;
 
 	//Check
@@ -163,12 +163,12 @@ struct Time::tnode* Time::search(struct tnode* p, int* times, int number) {
 }
 
 // Print time tree with filter
-void Time::treeprint_filter(struct tnode* p, std::string filter) {
+void Notebook::Time::treeprint_filter(struct tnode* p, std::string filter) {
 	if (p != NULL) {
 		treeprint_filter(p->left, filter);
 		if (strcmp(filter.c_str(), (p->place).c_str()) == 0) {
 			one_print(p);
-			Note.add_fil_count();
+			fil_count++;
 		}
 		treeprint_filter(p->right, filter);
 	}

@@ -1,15 +1,15 @@
-#ifndef _PRIOR_H_
-#define _PRIOR_H_
-#include "Prior.h"
+#ifndef _NOTEBOOK_H_
+#define _NOTEBOOK_H_
+#include "Notebook.h"
 #endif
 
 //Container-function
-void Prior::addtree_pr_container(struct prnode* pr, int number, int* times, int priors) {
+void Notebook::Prior::addtree_pr_container(struct prnode* pr, int number, int* times, int priors) {
 	pr_root = addtree_pr(pr_root, number, times, priors);
 }
 
 //Add note to priority tree
-struct Prior::prnode* Prior::addtree_pr(struct prnode* pr, int number, int* times, int priors) {
+struct Notebook::Prior::prnode* Notebook::Prior::addtree_pr(struct prnode* pr, int number, int* times, int priors) {
 	int cond = 0;
 
 	//Check
@@ -43,7 +43,7 @@ struct Prior::prnode* Prior::addtree_pr(struct prnode* pr, int number, int* time
 
 
 //Delete node from priority tree
-struct Prior::prnode* Prior::del_pr(struct prnode* pr, int number, int priors) {
+struct Notebook::Prior::prnode* Notebook::Prior::del_pr(struct prnode* pr, int number, int priors) {
 	if (pr == NULL)
 		return pr;
 
@@ -94,7 +94,7 @@ struct Prior::prnode* Prior::del_pr(struct prnode* pr, int number, int priors) {
 }
 
 //Free of priority tree
-void  Prior::freemem_pr(prnode* tree) {
+void  Notebook::Prior::freemem_pr(prnode* tree) {
 	if (tree != NULL) {
 		freemem_pr(tree->left);
 		freemem_pr(tree->right);
@@ -103,7 +103,7 @@ void  Prior::freemem_pr(prnode* tree) {
 }
 
 //Print priority tree
-void  Prior::treeprint_pr(struct prnode* pr) {
+void  Notebook::treeprint_pr(struct Prior::prnode* pr) {
 	if (pr != NULL) {
 		treeprint_pr(pr->left);
 		int times[5];
@@ -117,11 +117,11 @@ void  Prior::treeprint_pr(struct prnode* pr) {
 }
 
 //Search in priority tree by number
-void  Prior::search_pr(struct prnode* pr, int number) {
+void Notebook::search_pr(struct Prior::prnode* pr, int number) {
 	if (pr != NULL) {
 		search_pr(pr->left, number);
 		if (number == pr->number) {
-			Note.set_is_flag(1);
+			is_flag=1;
 			int priors = pr->priors;
 			int times[5];
 			for (int i = 0; i < 5; i++) {
@@ -129,7 +129,7 @@ void  Prior::search_pr(struct prnode* pr, int number) {
 			}
 			//printf("\nУ записи важность: %d, время: %d:%d", prior_tree, time_tree[3], time_tree[4]);
 			time_tree.del_container(time_tree.get_root(), number, times); //удаление из дерева времени 
-			pr_root = del_pr(pr_root, number, priors); //удаление из дерева важности
+			prior_tree.del_pr_container(prior_tree.get_pr_root(), number, priors); //удаление из дерева важности
 			return;
 		}
 		search_pr(pr->right, number);

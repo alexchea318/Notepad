@@ -1,10 +1,10 @@
-#ifndef _FILES_H_
-#define _FILES_H_
-#include "Files.h"
+#ifndef _NOTEBOOK_H_
+#define _NOTEBOOK_H_
+#include "Notebook.h"
 #endif
 
 //Get file name
-void Files::get_name() {
+void Notebook::Files::get_name() {
 	if (file_name.length()) {
 		return;
 	}
@@ -13,7 +13,7 @@ void Files::get_name() {
 }
 
 //Add node from tree to file
-void Files::add_to_file(int glob_count, int* times, int priors, std::string description, std::string place) {
+void Notebook::Files::add_to_file(int glob_count, int* times, int priors, std::string description, std::string place) {
 	get_name();
 	file.open(file_name, std::ios_base::app);
 	if (!file.is_open()) {
@@ -30,15 +30,15 @@ void Files::add_to_file(int glob_count, int* times, int priors, std::string desc
 }
 
 //Add nodes from file to tree
-int Files::add_to_tree(int glob_count) {
+int Notebook::add_to_tree(int glob_count) {
 	int start = glob_count;
-	get_name();
-	file.open(file_name, std::ios_base::in);
+	files_func.get_name();
+	files_func.file.open(files_func.file_name, std::ios_base::in);
 
-	if (!file.is_open()) {
-		file_name.empty();
+	if (!files_func.file.is_open()) {
+		files_func.file_name.empty();
 		std::cout << "\nОшибка открытия файла";
-		get_name();
+		files_func.get_name();
 	}
 
 	while (1) {
@@ -47,11 +47,11 @@ int Files::add_to_tree(int glob_count) {
 		std::string description;
 		std::string place;
 
-		file >> priors;
+		files_func.file >> priors;
 		for (int i = 0; i < 5; ++i)
-			file >> times[i];
-		file >> description;
-		file >> place;
+			files_func.file >> times[i];
+		files_func.file >> description;
+		files_func.file >> place;
 
 		if (description.length()) {
 			start++;
@@ -61,7 +61,7 @@ int Files::add_to_tree(int glob_count) {
 		}
 		else break;
 	}
-	file.close();
+	files_func.file.close();
 	std::cout << "\nУспешно добавлено событий: " << start - glob_count << "\n";
 	return start;
 }

@@ -1,5 +1,5 @@
-#ifndef _NOTEBOOK_H_
-#define _NOTEBOOK_H_
+#ifndef _MENU_H_
+#define _MENU_H_
 #include "Menu.h"
 #endif
 
@@ -56,23 +56,23 @@ void Menu::addnote() {
 		int add_node_to_file;
 		std::cin >> add_node_to_file;
 		if (add_node_to_file == 2) {
-			files_func.add_to_file(glob_count, times, priors, description, place);
+			note.files_func.add_to_file(glob_count, times, priors, description, place);
 		}
 
 		std::cout << "\nЗапись №" << glob_count;
 		std::cout << " \"" << description << "\" добавлена!\n";
 
-		time_tree.addtree_container(time_tree.get_root(), glob_count, times, priors, description, place); //Add node in time tree
-		prior_tree.addtree_pr_container(prior_tree.get_pr_root(), glob_count, times, priors); //Add node in priority tree
+		note.time_tree.addtree_container(note.time_tree.get_root(), glob_count, times, priors, description, place); //Add node in time tree
+		note.prior_tree.addtree_pr_container(note.prior_tree.get_pr_root(), glob_count, times, priors); //Add node in priority tree
 	}
 	else {
-		glob_count=files_func.add_to_tree(glob_count);
+		glob_count= note.add_to_tree(glob_count);
 	}
 }
 
 //Prepares before delete
 void Menu::before_delete() {
-	if (time_tree.get_root() == NULL) {
+	if (note.time_tree.get_root() == NULL) {
 		std::cout << "\nДерево пустое";
 	}
 	else {
@@ -84,9 +84,9 @@ void Menu::before_delete() {
 				std::cout << "\nЗаписи с таким номером не может существовать, повторитее ввод";
 			}
 			else {
-				prior_tree.search_pr(prior_tree.get_pr_root(), number); //Search note with number in priority tree
-				if (is_flag == 1) {
-					is_flag = -1;
+				note.search_pr(note.prior_tree.get_pr_root(), number); //Search note with number in priority tree
+				if (note.is_flag == 1) {
+					note.is_flag = -1;
 					break;
 				}
 				else {
@@ -103,16 +103,16 @@ void Menu::before_out() {
 	std::cout << "Введите:\n1 - вывести с сортировкой по дате\n2 - вывести с сортировкой по важности\n3 - вывести с фильтром по месту\nОперация: ";
 	std::cin >> type_out;
 	if (type_out == 1) {
-		time_tree.treeprint(time_tree.get_root()); //Print time tree with date sort
+		note.time_tree.treeprint(note.time_tree.get_root()); //Print time tree with date sort
 	}
 	else if (type_out == 2) {
-		prior_tree.treeprint_pr(prior_tree.get_pr_root()); //Print priority tree with prior sort
+		note.treeprint_pr(note.prior_tree.get_pr_root()); //Print priority tree with prior sort
 	}
 	else if (type_out == 3) {
 		std::string filter = get_data("Введите фильтр места (например, дом)", "Нельзя использовать пустой фильтр, повторите ввод");
-		fil_count = 0;
-		time_tree.treeprint_filter(time_tree.get_root(), filter); //Print time tree with place filter
-		if (fil_count == 0) {
+		note.time_tree.fil_count = 0;
+		note.time_tree.treeprint_filter(note.time_tree.get_root(), filter); //Print time tree with place filter
+		if (note.time_tree.fil_count == 0) {
 			std::cout << "\nЗаписей не найдено";
 		}
 	}
@@ -133,7 +133,7 @@ void Menu::menu() {
 			before_delete();
 		}
 		else if (type_operation == 3) {
-			if (time_tree.get_root() == NULL) {
+			if (note.time_tree.get_root() == NULL) {
 				std::cout << "\nДерево пустое" ;
 			}
 			else {
